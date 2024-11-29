@@ -1,0 +1,78 @@
+# No version needed in Docker Compose v2
+# version: "3.9"
+
+services:
+    Mongo:
+        image: mongo:8.0
+        container_name: mongo
+        restart: always
+        ports:
+            - "27017:27017"
+        #environment:
+        #    MONGO_INITDB_ROOT_USERNAME: ${MONGO_ROOT_USERNAME}
+        #    MONGO_INITDB_ROOT_PASSWORD: ${MONGO_ROOT_PASSWORD}
+        networks:
+            - "three-tier"
+        volumes:
+            - "db:/etc/mongo/"
+
+    Backend:
+        build:
+            context: https://github.com/Uj5Ghare/Techdome-Backend.git
+            dockerfile: Dockerfile
+        image: backend:latest
+        container_name: backend
+        restart: always
+        ports:
+            - "8000:8000"
+        environment:
+            DB: mongodb://mongo:27017
+        networks:
+            - "three-tier"
+        volumes:
+            - "backend:/usr/local/app/"
+        depends_on:
+            - Mongo
+
+    Frontend:
+        build:
+            context: https://github.com/Uj5Ghare/Techdome-Frontend.git
+            dockerfile: Dockerfile
+        image: frontend:latest
+        container_name: frontend
+        restart: always
+        ports:
+            - "3000:3000"
+        environment:
+          REACT_APP_BASE_URL: http://18.60.241.8:8000/api
+        networks:
+            - "three-tier"
+        volumes:
+            - "frontend:/usr/local/app/"
+        depends_on:
+            - Backend
+
+    Nginx:
+      image: nginx:latest
+      container_name: nginx
+      restart: always
+      ports:
+        - "80:80"
+      networks:
+        - "three-tier"
+      volumes:
+        - ./nginx.conf:/etc/nginx/nginx.conf:ro
+      depends_on:
+        - Frontend
+
+networks:
+    three-tier:
+        driver: bridge
+
+volumes:
+    db:
+        driver: local
+    backend:
+        driver: local
+    frontend:
+        driver: local
