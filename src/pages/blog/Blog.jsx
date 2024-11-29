@@ -65,7 +65,7 @@ const Blog = () => {
 
 
                 <div className='inner'>
-                    <div className='imageCon' style={{ background: `url(${blogData.img})`, backgroundSize: "cover" }}>
+                    <div className='imageCon' style={{ background: 'url(${blogData.img}) no-repeat center center / cover' }}>
                         <div>
                             <section> {blogData.title} </section>
                         </div>
