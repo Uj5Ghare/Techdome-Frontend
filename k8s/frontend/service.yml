@@ -1,0 +1,16 @@
+# Service for the application
+apiVersion: v1
+kind: Service
+metadata:
+  name: techdome-frontend-svc
+  namespace: techdome
+  labels:
+    app: techdome-frontend
+spec:
+  ports:
+  - port: 80
+    targetPort: 3000
+    protocol: TCP
+  selector:
+    app: techdome-frontend
+  type: ClusterIP
