@@ -3,7 +3,7 @@ import axios from "../apiConfig/api";
 
 export const registeruser = (userData, navigate, fun) => async () => {
     try {
-        const config = { headers: { "Conetnt-Type": "application/json" } };
+        const config = { headers: { "Content-Type": "application/json" } };
         const res = await axios.post("/register", userData, config);
         if (res.status == 201) {
             navigate("/login");
@@ -21,7 +21,7 @@ export const registeruser = (userData, navigate, fun) => async () => {
 
 export const loginUser = (userData, fun) => async (dispatch) => {
     try {
-        const config = { headers: { "Conetnt-Type": "application/json" } };
+        const config = { headers: { "Content-Type": "application/json" } };
         const res = await axios.post("/login", userData, config);
         if (res.status == 200) {
             localStorage.setItem("userToken", res.data.token);
@@ -42,7 +42,7 @@ export const loadUser = () => async (dispatch) => {
     try {
         const token = localStorage.getItem("userToken");
         if (token) {
-            const config = { headers: { "Conetnt-Type": "application/json" } };
+            const config = { headers: { "Content-Type": "application/json" } };
             const res = await axios.post("/get_user_data", { token }, config);
             dispatch({ type: LOAD_SUCCESS, payload: res.data.user });
         } else {

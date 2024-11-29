@@ -6,7 +6,7 @@ import axiosNew from "../apiConfig/api";
 
 const uploadData = async (data, dispatch) => {
     try {
-        const config = { headers: { "Conetnt-Type": "application/json" } };
+        const config = { headers: { "Content-Type": "application/json" } };
         const res = await axiosNew.post("/add_blog", data, config);
         dispatch({ type: ADD_NEW_BLOG, payload: res.data.blog });
     } catch (error) {
@@ -16,7 +16,7 @@ const uploadData = async (data, dispatch) => {
 
 const updateData = async (data, dispatch) => {
     try {
-        const config = { headers: { "Conetnt-Type": "application/json" } };
+        const config = { headers: { "Content-Type": "application/json" } };
         const res = await axiosNew.post("/update_blog", data, config);
         dispatch({ type: UPDATE_NEW_BLOG, payload: res.data.newBlog });
     } catch (error) {
@@ -43,7 +43,7 @@ export const addBlog = (blogData) => async (dispatch) => {
 export const deleteBlog = (blogData) => async (dispatch) => {
     try {
         dispatch({ type: DEL_BLOG, payload: blogData._id });
-        const config = { headers: { "Conetnt-Type": "application/json" } };
+        const config = { headers: { "Content-Type": "application/json" } };
         const { data } = await axiosNew.post("/delete_blog", blogData, config);
         console.log(data);
     } catch (error) {
@@ -54,7 +54,7 @@ export const deleteBlog = (blogData) => async (dispatch) => {
 export const updateBlog = (blogData) => async (dispatch) => {
     try {
         dispatch({ type: BLOG_REQUEST });
-        const config = { headers: { "Conetnt-Type": "application/json" } };
+        const config = { headers: { "Content-Type": "application/json" } };
 
         if (blogData.imgChange) {
 
