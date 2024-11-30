@@ -28,17 +28,16 @@ jobs:
     - name: Install and Setup Docker-Compose
       run: |
         sudo apt update 
-        sudo apt install docker-compose-v2 -y
-        sudo systemctl restart docker
-        sudo usermod -aG docker ubuntu
-        newgrp docker
+        curl -fsSL https://get.docker.com -o get-docker.sh
+        sudo sh get-docker.sh
+        sudo rm -rf get-docker.sh 
 
-    - name: Setup Env variables
-      run: | 
-        echo -e ${{ secrets.ENV }} > frontend/.env
+    # - name: Setup Env variables
+    #   run: | 
+    #     echo -e ${{ secrets.ENV }} > .env
         
     - name: Destroy Previous Deployment
-      run: docker compose down
+      run: sudo docker compose down
 
     - name: Apply New Deployment
-      run: docker compose up -d
+      run: sudo docker compose up -d
