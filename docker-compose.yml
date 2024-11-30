@@ -44,7 +44,7 @@ services:
         ports:
             - "3000:3000"
         environment:
-          REACT_APP_BASE_URL: http://18.60.241.8:8000/api
+          REACT_APP_BASE_URL: http://backend:8000/api
         networks:
             - "three-tier"
         volumes:
