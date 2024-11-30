@@ -1,0 +1,45 @@
+name: Docker Compose Deployment Workflow
+
+on:
+  push:
+    branches: [main, docker]
+  pull_request:
+    types: [synchronize]
+  workflow_dispatch:
+
+defaults:
+  run:
+    shell: bash
+
+permissions:
+  actions: read
+  contents: read
+
+jobs:
+  Docker-Compose-Deployment:
+    runs-on: ubuntu-24.04
+    steps:
+
+    - name: Checkout Code 
+      uses: actions/checkout@v4
+      with:
+        ref: ${{ github.ref_name }}
+
+    - name: Install and Setup Docker-Compose
+      run: |
+        sudo apt update 
+        curl -fsSL https://get.docker.com -o get-docker.sh
+        sudo sh get-docker.sh
+        sudo rm -rf get-docker.sh 
+        sudo usermod -aG docker ubuntu
+        newgrp docker
+
+    - name: Setup Env variables
+      run: | 
+        echo -e ${{ secrets.ENV }} > frontend/.env
+        
+    - name: Destroy Previous Deployment
+      run: docker compose down
+
+    - name: Apply New Deployment
+      run: docker compose up -d
