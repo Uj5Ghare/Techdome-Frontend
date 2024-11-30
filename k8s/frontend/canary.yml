@@ -1,0 +1,36 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Rollout
+metadata:
+  name: techdome-frontend-canary-deployment
+  namespace: techdome
+  labels:
+    app: techdome-frontend
+spec:
+  replicas: 3
+  strategy:
+    canary:
+      steps:
+        - setWeight: 25         # Start by sending 25% of the traffic to the canary version
+        - pause: 
+            duration: 30s       # This step pauses the rollout for a certain duration. 
+        - setWeight: 50         # Shift 50% of the traffic to the canary version
+        - pause: 
+            duration: 30s
+        - setWeight: 75         # Shift 75% of the traffic to the canary version
+        - pause: 
+            duration: 30s
+        - setWeight: 100        # Send 100% traffic to the canary version
+  selector:
+    matchLabels:
+      app: techdome-frontend 
+  template:
+    metadata:
+      labels:
+        app: techdome-frontend
+    spec:
+      containers:
+        - name: techdome-frontend
+          image: uj5ghare/techdome-frontend:latest
+          ports:
+            - containerPort: 8000
+          imagePullPolicy: Always
