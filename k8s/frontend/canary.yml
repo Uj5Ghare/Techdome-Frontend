@@ -1,7 +1,7 @@
 apiVersion: argoproj.io/v1alpha1
 kind: Rollout
 metadata:
-  name: techdome-frontend-deployment
+  name: techdome-frontend-canary-deployment
   namespace: techdome
   labels:
     app: techdome-frontend
