@@ -32,12 +32,12 @@ jobs:
         sudo sh get-docker.sh
         sudo rm -rf get-docker.sh 
 
-    - name: Setup Env variables
-      run: | 
-        echo -e ${{ secrets.ENV }} > frontend/.env
+    # - name: Setup Env variables
+    #   run: | 
+    #     echo -e ${{ secrets.ENV }} > .env
         
     - name: Destroy Previous Deployment
-      run: docker compose down
+      run: sudo docker compose down
 
     - name: Apply New Deployment
-      run: docker compose up -d
+      run: sudo docker compose up -d
